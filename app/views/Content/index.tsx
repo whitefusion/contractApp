@@ -1,17 +1,29 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+
 import Web3 from 'web3';
 import Balance from '../Balance/index';
 import Order from '../Order/index';
 import tokenJson from '../../build_contract/HebiToken.json';
 import exchangeJson from '../../build_contract/Exchange.json';
+import { loadBalanceData } from '@/app/redux/slices/balanceSlice';
+import { useDispatch } from 'react-redux';
+import { ContractContext } from '../contractContext';
 
 export default function Content () {
+  const dispatch = useDispatch();
+  const contractInit = useContext(ContractContext);
+  const [contractGlobal, setContractGlobal ]= useState(contractInit);
 
   useEffect(() => {
-    console.log('use effect');
     const start = async () => {
       const web = await initWeb();
-      (window as any)['web'] = web;
+      const { web3 } = web as any;
+      setContractGlobal({
+        ...web,
+        convert: (n: string) => web3?.utils?.fromWei(n),
+      });
+
+      dispatch(loadBalanceData(web));
     };
     try {
       if (!(window as any)?.web) {
@@ -20,7 +32,7 @@ export default function Content () {
     } catch(e) {
       console.log(e); 
     }
-  }, []);
+  }, [dispatch]);
 
   const initWeb = async () => {
     // 获取账户
@@ -43,9 +55,9 @@ export default function Content () {
   };
 
   return (
-    <>
+    <ContractContext.Provider value={contractGlobal}>
       <Balance></Balance>
       <Order></Order>
-    </>
+    </ContractContext.Provider>
   );
 }

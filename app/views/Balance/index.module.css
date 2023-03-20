@@ -1,0 +1,12 @@
+.balance {
+  display: flex;
+}
+
+.balanceCard {
+  width: 275px;
+  padding: 16px;
+  border: 1px solid #999;
+  border-radius: 8px;
+  line-height: 40px;
+  margin-right: 40px;
+}
