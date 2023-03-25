@@ -1,5 +1,6 @@
 .balance {
   display: flex;
+  flex-direction: column;
 }
 
 .balanceCard {

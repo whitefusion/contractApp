@@ -28,22 +28,17 @@ const balanceSlice = createSlice({
 export const loadBalanceData = createAsyncThunk(
   "balance/fetchBalanceData",
   async(data, {dispatch}) => {
-    console.log('data: ', data);
     const { web3, account, token, exchange } = (data as any) || {};
     const tokenWallet = await token.methods.balanceOf(account).call();
-    console.log('tokenWallet', tokenWallet);
     dispatch(setTokenWallet(tokenWallet));
 
     const tokenExchange = await exchange.methods.balanceOf(token.options.address, account).call();
-    console.log('tokenExchange: ', tokenExchange);
     dispatch(setTokenExchange(tokenExchange));
 
     const etherWallet = await web3.eth.getBalance(account);
-    console.log('etherWallet: ', etherWallet);
     dispatch(setEtherWallet(etherWallet));
 
     const etherExchange = await exchange.methods.balanceOf(ETHER_ADDRESS, account).call();
-    console.log('etherExchange: ', etherExchange);
     dispatch(setEtherExchange(etherExchange));
   }
 );
