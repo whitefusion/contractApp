@@ -8,6 +8,7 @@ import exchangeJson from '../../build_contract/Exchange.json';
 import { loadBalanceData } from '@/app/redux/slices/balanceSlice';
 import { useDispatch } from 'react-redux';
 import { ContractContext } from '../contractContext';
+import { loadAllOrderData, loadCancelOrderData, loadFillOrderData } from '@/app/redux/slices/orderSlice';
 
 export default function Content () {
   const dispatch = useDispatch();
@@ -17,21 +18,31 @@ export default function Content () {
   useEffect(() => {
     const start = async () => {
       const web = await initWeb();
-      const { web3 } = web as any;
+      const { web3, exchange } = web as any;
       setContractGlobal({
         ...web,
         convert: (n: string) => web3?.utils?.fromWei(n),
       });
-
+      
       dispatch(loadBalanceData(web));
+
+      dispatch(loadAllOrderData(web));
+      dispatch(loadCancelOrderData(web));
+      dispatch(loadFillOrderData(web));
+
+      exchange.events.Order({}, (error, event) => {
+        dispatch(loadAllOrderData(web));
+      });
+      exchange.events.Cancel({}, (error, event) => {
+        dispatch(loadCancelOrderData(web));
+      });
+      exchange.events.Trade({}, (error, event) => {
+        dispatch(loadFillOrderData(web));
+        dispatch(loadBalanceData(web));
+      });
+
     };
-    try {
-      if (!(window as any)?.web) {
-        start();
-      }
-    } catch(e) {
-      console.log(e); 
-    }
+    start();
   }, [dispatch]);
 
   const initWeb = async () => {
