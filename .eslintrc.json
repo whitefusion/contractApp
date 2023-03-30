@@ -1,6 +1,8 @@
 {
   "extends": "next/core-web-vitals",
   "globals": {
-    "window": "readonly"
+    "window": "readonly",
+    "web3": "readonly",
+    "artifacts": "readonly"
   }
 }

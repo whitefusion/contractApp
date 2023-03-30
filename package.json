@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "NODE_ENV=test mocha"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.3",
@@ -23,7 +24,11 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-redux": "^8.0.5",
-    "typescript": "5.0.2",
     "web3": "1.8.0"
+  },
+  "devDependencies": {
+    "@openzeppelin/contracts": "^4.8.2",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.2"
   }
 }

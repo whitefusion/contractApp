@@ -23,6 +23,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/views/Square/index.jsx", "app/views/Square/index.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "test/contract/HebiToken.test.js", "test/contract/HebiToken.test.js"],
   "exclude": ["node_modules"]
 }
